@@ -100,4 +100,53 @@ class Ced_Dropbox_Image_Public {
 
 	}
 
+
+	/**
+	 * ced_custom_featured_image_frontend
+	 *
+	 * @param  mixed $html
+	 * @param  mixed $attachment_id
+	 * @return void
+	 */
+	public function ced_custom_featured_image_frontend( $html, $attachment_id)
+	{
+			global $post;
+			if('yes'==get_post_meta($post->ID, 'ced_featured_image_setting', 1)){
+				$image_url_list = get_post_meta(get_the_ID(), 'ced_dropbox_url', 1);
+				$htmlTypeUrl = str_replace("dl=0", "dl=1", $image_url_list[0]);
+				$featured_image = get_post_thumbnail_id( $post->ID );
+				if ( $attachment_id == $featured_image ){
+					$html = '<img src="'.$htmlTypeUrl.'">';
+					return $html;
+				}
+			}
+			return $html;
+	}
+
+
+	// public function ced_custom_featured_image_shop_page($size = 'shop_catalog' ){
+	// 	global $post, $woocommerce;
+	// 	if('yes'==get_post_meta($post->ID, 'ced_featured_image_setting', 1)){
+	// 		$image_url_list = get_post_meta(get_the_ID(), 'ced_dropbox_url', 1);
+	// 		$htmlTypeUrl = str_replace("dl=0", "dl=1", $image_url_list[0]);
+    //     $output = '<div class="col-lg-4">';
+    //     if ( has_post_thumbnail() ) {
+    //         $output .= get_the_post_thumbnail( $post->ID, $size );
+    //     } else {
+    //          $output .= wc_placeholder_img( $size );
+    //          $output .= '<img src="' . $htmlTypeUrl . '" alt="Placeholder" width="300px" height="300px" />';
+    //     }
+    //     $output .= '</div>';
+	// 	return $output;
+	// }
+	// }
+
+
+	// public function ced_custom_featured_image_shop_page_show(){
+	// 	echo $this->ced_custom_featured_image_shop_page();
+
+
+	// }
+
+
 }

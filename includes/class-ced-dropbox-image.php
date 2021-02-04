@@ -158,11 +158,9 @@ class Ced_Dropbox_Image {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action('admin_menu', $plugin_admin, 'ced_dropbox_setting_page');
 		$this->loader->add_action('add_meta_boxes', $plugin_admin, 'ced_custom_meta_product_image');
+		$this->loader->add_action('save_post', $plugin_admin,'ced_featured_image_setting');
 		$this->loader->add_action('wp_ajax_ced_fetch_upload_file', $plugin_admin, 'ced_custom_meta_product_image_save');
-		$this->loader->add_action('wp_ajax_make_setting_featured_image', $plugin_admin, 'ced_featured_image_setting');
-		
-		// $this->loader->add_action('save_post', $plugin_admin,'ced_custom_meta_product_image_save');
-
+		// $this->loader->add_action('wp_ajax_make_setting_featured_image', $plugin_admin, 'ced_featured_image_setting');
 	}
 
 	/**
@@ -178,7 +176,9 @@ class Ced_Dropbox_Image {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
+		$this->loader->add_filter('woocommerce_single_product_image_thumbnail_html',$plugin_public,'ced_custom_featured_image_frontend',10,2);
+		// $this->loader->remove_action('woocommerce_before_shop_loop_item_title',$plugin_public,'ced_custom_featured_image_shop_page',10);
+		// $this->loader->add_action('woocommerce_before_shop_loop_item_title',$plugin_public,'ced_custom_featured_image_shop_page',10);
 	}
 
 	/**

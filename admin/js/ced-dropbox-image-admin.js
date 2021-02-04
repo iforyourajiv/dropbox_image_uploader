@@ -40,30 +40,5 @@
       });
   });
 
-  $(document).on("change","#setting_featured",function(){
-    var id;
-    var postid = $('#upload_btn').attr("data-product");
-    if ($(this).is(":checked")) {
-     id="checkedIN";
-  } else {
-     id="checkedOUT";
-  }
-  $.ajax({
-		url: fetch_upload_file_name.ajaxurl,
-		type: "POST",
-		data:{
-      action:'make_setting_featured_image',
-      nonce: fetch_upload_file_name.nonce,
-      status:id,
-      postid:postid,
-    },
-      success: function (response) {
-			console.log(response);
-
-		},
-    });
-
-  })
-
 })
 })(jQuery)

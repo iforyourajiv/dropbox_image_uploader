@@ -177,26 +177,58 @@ class Ced_Dropbox_Image_Admin
 			</form>
 			<div id='image'>
 				<?php
+				$checked='';
 				$image_url_list = get_post_meta(get_the_ID(), 'ced_dropbox_url', 1);
+				if(is_array($image_url_list) && !empty($image_url_list)){
 				foreach ($image_url_list as $image_url) {
 					$htmlTypeUrl = str_replace("dl=0", "dl=1", $image_url);
 				?>
 					<img src="<?php echo $htmlTypeUrl ?>" alt="<?php echo basename($htmlTypeUrl) ?>" width="80px" height="80px">
 				<?php
+
+					$status = get_post_meta(get_the_ID(), 'ced_featured_image_setting', 1);
+					$checked = '';
+					if ('yes' == $status) {
+						$checked = 'checked';
+					} else {
+						$checked = '';
+					}
 				}
+			} else {
+				echo esc_html('Image Not Found');
+			}
+
 				?>
 			</div>
 			<br>
-			<input type="checkbox" name='setting_featured' id='setting_featured' checked> Set First Image As Featured Image
+			<input type="checkbox" name='setting_featured' id='setting_featured' <?php echo $checked ?>> Set First Image As Featured Image
+
 <?php
 		}
 	}
 
 
+
+	/**
+	 * Function:ced_featured_image_setting
+	 *
+	 * @return void
+	 */
+	public function ced_featured_image_setting()
+	{
+
+		if (isset($_POST['setting_featured'])) {
+			update_post_meta(get_the_ID(), 'ced_featured_image_setting', 'yes');
+		} else {
+			update_post_meta(get_the_ID(), 'ced_featured_image_setting', 'no');
+		}
+	}
+
+		
 	/**
 	 * Function:ced_custom_meta_product_image_save
-	 * Description: 
-	 * 
+	 * Description:
+	 *
 	 * @since  :1.0.0
 	 * Version :1.0.0
 	 * @return void
@@ -282,26 +314,5 @@ class Ced_Dropbox_Image_Admin
 		}
 
 		return true;
-	}
-
-
-
-	/**
-	 * Function:ced_featured_image_setting
-	 *
-	 * @return void
-	 */
-	public function ced_featured_image_setting()
-	{
-		if (check_ajax_referer('verify-ajax-call', 'nonce')) {
-			$status = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : false;
-			$productId = isset($_POST['postid']) ? sanitize_text_field($_POST['postid']) : false;
-			if ('checkedIN' == $status) {
-				update_post_meta($productId, 'ced_featured_image_setting', 'yes');
-			} else {
-				update_post_meta($productId, 'ced_featured_image_setting', 'no');
-			}
-		}
-		wp_die();
 	}
 }
